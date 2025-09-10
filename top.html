@@ -13,21 +13,43 @@
       padding: 15px;
       margin: 15px;
       background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .post h3 {
-      margin: 0;
+      margin: 0 0 10px;
       font-size: 20px;
+      color: #333;
     }
-    .rating {
-      margin-top: 8px;
+    .stars {
+      display: flex;
+      gap: 5px;
+      cursor: pointer;
+      font-size: 22px;
+      color: #ddd;
+    }
+    .stars .active {
       color: gold;
-      font-size: 18px;
+    }
+    .rating-text {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #666;
+    }
+    .school-link {
+      text-decoration: none;
+      color: inherit;
     }
   </style>
 </head>
 <body>
-  <h1>Top Écoles</h1>
-  <div id="top-list"></div>
+  <header class="appbar">
+    <div class="logo">Edami</div>
+    <input type="text" placeholder="Rechercher une école..." class="search-bar">
+  </header>
+
+  <main class="content" id="top-list">
+    <h2>Top Écoles</h2>
+  </main>
 
   <nav class="bottombar">
     <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
@@ -36,45 +58,73 @@
   </nav>
 
   <script>
-    // Liste avec notes
     const schools = {
-      "omar_bongo": { 
-        name: "Université Omar Bongo", 
-        rating: 4.5 
-      },
-      "ens": { 
-        name: "École Normale Supérieure", 
-        rating: 4.2 
-      },
-      "ist": { 
-        name: "Institut Supérieur de Technologie", 
-        rating: 3.8 
-      }
+      "omar_bongo": { name: "Université Omar Bongo" },
+      "ens": { name: "École Normale Supérieure" },
+      "ist": { name: "Institut Supérieur de Technologie" }
     };
 
     const container = document.getElementById("top-list");
 
-    function generateStars(rating) {
-      let stars = "";
-      const fullStars = Math.floor(rating);
-      const halfStar = rating % 1 >= 0.5;
-      for (let i = 0; i < fullStars; i++) stars += "★";
-      if (halfStar) stars += "☆"; // demi-étoile (visuelle simplifiée)
-      while (stars.length < 5) stars += "☆";
-      return stars;
+    // Charger les notes depuis localStorage
+    let ratings = JSON.parse(localStorage.getItem("ratings")) || {
+      "omar_bongo": { total: 0, count: 0 },
+      "ens": { total: 0, count: 0 },
+      "ist": { total: 0, count: 0 }
+    };
+
+    function renderStars(schoolId, avgRating) {
+      let html = "";
+      for (let i = 1; i <= 5; i++) {
+        html += `<i class="fas fa-star ${i <= avgRating ? "active" : ""}" data-value="${i}" data-school="${schoolId}"></i>`;
+      }
+      return html;
     }
 
-    for (let id in schools) {
-      const div = document.createElement("div");
-      div.classList.add("post");
-      div.innerHTML = `
-        <a href="school.html?id=${id}" class="school-link">
-          <h3>${schools[id].name}</h3>
-        </a>
-        <div class="rating">${generateStars(schools[id].rating)}</div>
-      `;
-      container.appendChild(div);
+    function renderSchools() {
+      container.innerHTML = "<h2>Top Écoles</h2>";
+
+      // Créer un tableau avec les moyennes
+      const sorted = Object.keys(schools).map(id => {
+        const data = ratings[id];
+        const avg = data.count > 0 ? data.total / data.count : 0;
+        return { id, avg, count: data.count };
+      }).sort((a, b) => b.avg - a.avg); // tri décroissant
+
+      // Générer les cards
+      sorted.forEach(item => {
+        const id = item.id;
+        const data = ratings[id];
+        const avgRounded = Math.round(item.avg);
+
+        const div = document.createElement("div");
+        div.classList.add("post");
+        div.innerHTML = `
+          <a href="school.html?id=${id}" class="school-link">
+            <h3>${schools[id].name}</h3>
+          </a>
+          <div class="stars">${renderStars(id, avgRounded)}</div>
+          <div class="rating-text">${item.count} votes - Moyenne: ${item.count > 0 ? item.avg.toFixed(1) : "N/A"}</div>
+        `;
+        container.appendChild(div);
+      });
+
+      // Ajouter les listeners après rendu
+      document.querySelectorAll(".stars i").forEach(star => {
+        star.addEventListener("click", () => {
+          const value = parseInt(star.dataset.value);
+          const schoolId = star.dataset.school;
+
+          ratings[schoolId].total += value;
+          ratings[schoolId].count += 1;
+
+          localStorage.setItem("ratings", JSON.stringify(ratings));
+          renderSchools(); // re-render
+        });
+      });
     }
+
+    renderSchools();
   </script>
 </body>
 </html>
