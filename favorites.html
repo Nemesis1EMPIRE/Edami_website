@@ -19,22 +19,31 @@
   </nav>
 
    <script>
-    // Récupérer les favoris
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const schools = {
+    "omar_bongo": { name: "Université Omar Bongo" },
+    "ens": { name: "École Normale Supérieure" },
+    "ist": { name: "Institut Supérieur de Technologie" }
+  };
 
-    const listContainer = document.getElementById("favorites-list");
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const container = document.getElementById("favorites-list");
 
-    if (favorites.length === 0) {
-      listContainer.innerHTML = "<p>Aucun favori pour le moment.</p>";
-    } else {
-      favorites.forEach(id => {
-        // Ici tu peux personnaliser l’affichage
-        const item = document.createElement("div");
-        item.classList.add("favorite-item");
-        item.textContent = "École " + id; // Remplace par le vrai nom de l’école si tu veux
-        listContainer.appendChild(item);
-      });
-    }
-  </script>
+  if (favorites.length === 0) {
+    container.innerHTML = "<p>Vous n'avez aucune école favorite.</p>";
+  } else {
+    favorites.forEach(id => {
+      if (schools[id]) {
+        const div = document.createElement("div");
+        div.classList.add("favorite-item");
+        div.innerHTML = `
+          <a href="school.html?id=${id}">
+            <h3>${schools[id].name}</h3>
+          </a>
+        `;
+        container.appendChild(div);
+      }
+    });
+  }
+</script>
 </body>
 </html>
