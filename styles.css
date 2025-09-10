@@ -1,10 +1,4 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+
 
 /* Body */
 body {
@@ -14,64 +8,79 @@ body {
   height: 100vh;
 }
 
-/* AppBar */
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Appbar */
 .appbar {
-  background: #006400;
-  color: white;
-  padding: 0.7rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: #2c3e50;
+  color: white;
+  padding: 10px 15px;
+  position: sticky;
+  top: 0;
 }
 
-.appbar .logo {
+.logo {
+  font-size: 20px;
   font-weight: bold;
-  font-size: 1.2rem;
 }
 
-.appbar input {
-  padding: 0.4rem;
+.search-bar {
+  padding: 5px 10px;
+  border-radius: 20px;
   border: none;
-  border-radius: 5px;
-  width: 60%;
+  outline: none;
 }
 
-/* Feed */
-.feed {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem;
+/* Content */
+.content {
+  padding: 15px;
+  margin-bottom: 70px; /* espace pour ne pas cacher par la bottombar */
 }
 
 .post {
-  background: white;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  background: #f4f4f4;
+  padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.post h3 {
-  margin-bottom: 0.5rem;
-  color: #006400;
+  margin-bottom: 15px;
 }
 
 /* Bottom Navbar */
-.bottom-nav {
-  background: white;
+.bottombar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #2c3e50;
   display: flex;
   justify-content: space-around;
-  padding: 0.7rem 0;
-  border-top: 1px solid #ddd;
+  align-items: center;
+  border-top: 2px solid #ddd;
 }
 
-.bottom-nav a {
+.bottombar a {
+  color: white;
   text-decoration: none;
-  color: #666;
-  font-size: 0.9rem;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.bottom-nav a.active {
-  color: #006400;
-  font-weight: bold;
+.bottombar i {
+  font-size: 20px;
+  margin-bottom: 3px;
+}
+
+.bottombar a:hover {
+  color: #1abc9c;
 }
