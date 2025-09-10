@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Écoles</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .post {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px;
+      background: #fff;
+    }
+    .post h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .rating {
+      margin-top: 8px;
+      color: gold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Top Écoles</h1>
+  <div id="top-list"></div>
+
+  <nav class="bottombar">
+    <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
+    <a href="top.html" class="active"><i class="fas fa-star"></i><span>Top Écoles</span></a>
+    <a href="#"><i class="fas fa-user"></i><span>Profil</span></a>
+  </nav>
+
+  <script>
+    // Liste avec notes
+    const schools = {
+      "omar_bongo": { 
+        name: "Université Omar Bongo", 
+        rating: 4.5 
+      },
+      "ens": { 
+        name: "École Normale Supérieure", 
+        rating: 4.2 
+      },
+      "ist": { 
+        name: "Institut Supérieur de Technologie", 
+        rating: 3.8 
+      }
+    };
+
+    const container = document.getElementById("top-list");
+
+    function generateStars(rating) {
+      let stars = "";
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5;
+      for (let i = 0; i < fullStars; i++) stars += "★";
+      if (halfStar) stars += "☆"; // demi-étoile (visuelle simplifiée)
+      while (stars.length < 5) stars += "☆";
+      return stars;
+    }
+
+    for (let id in schools) {
+      const div = document.createElement("div");
+      div.classList.add("post");
+      div.innerHTML = `
+        <a href="school.html?id=${id}" class="school-link">
+          <h3>${schools[id].name}</h3>
+        </a>
+        <div class="rating">${generateStars(schools[id].rating)}</div>
+      `;
+      container.appendChild(div);
+    }
+  </script>
+</body>
+</html>
