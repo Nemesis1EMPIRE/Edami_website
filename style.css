@@ -111,6 +111,24 @@ body {
   text-decoration: underline;
   color: #1abc9c;
 }
+.favorite-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ccc;
+  float: right;
+  font-size: 18px;
+  transition: color 0.2s;
+}
+
+.favorite-btn.active {
+  color: #e74c3c;
+}
+
+.favorite-btn:hover {
+  color: #e74c3c;
+}
+
 
 /* Responsive pour petits écrans */
 @media (max-width: 480px) {
