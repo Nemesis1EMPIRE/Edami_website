@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>LocalStorage test</title></head>
+<body>
+  <h3>Test localStorage</h3>
+  <button id="add">Ajouter "omar_bongo"</button>
+  <button id="clear">Effacer</button>
+  <pre id="out"></pre>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const out = document.getElementById('out');
+  function show(){ out.textContent = JSON.stringify(JSON.parse(localStorage.getItem('favorites')||'[]'), null, 2); }
+
+  document.getElementById('add').addEventListener('click', () => {
+    const fav = JSON.parse(localStorage.getItem('favorites')||'[]');
+    if(!fav.includes('omar_bongo')) fav.push('omar_bongo');
+    localStorage.setItem('favorites', JSON.stringify(fav));
+    console.log('saved', fav);
+    show();
+  });
+
+  document.getElementById('clear').addEventListener('click', () => {
+    localStorage.removeItem('favorites');
+    show();
+  });
+
+  show();
+});
+</script>
+</body>
+</html>
