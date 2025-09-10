@@ -20,7 +20,7 @@
     <div class="post">
       <a href="school.html?id=omar_bongo" class="school-link">Université Omar Bongo</a>
       <button class="favorite-btn" data-school="omar_bongo"><i class="fas fa-heart"></i></button>
-      <p> Journée portes ouvertes ce samedi !</p>
+      <p>Journée portes ouvertes ce samedi !</p>
    </div>
 
    <div class="post">
@@ -28,9 +28,10 @@
       <button class="favorite-btn" data-school="ens"><i class="fas fa-heart"></i></button>
       <p>Inscription aux clubs universitaires ouverte.</p>
    </div>
+
    <div class="post">
       <a href="school.html?id=ist" class="school-link">Institut Supérieur de Technologie</a>
-      <button class="favorite-btn" data-school="ens"><i class="fas fa-heart"></i></button>
+      <button class="favorite-btn" data-school="ist"><i class="fas fa-heart"></i></button>
       <p></p>
    </div>
 
@@ -41,5 +42,39 @@
     <a href="test.html"><i class="fas fa-star"></i><span>Top Écoles</span></a>
     <a href="#"><i class="fas fa-user"></i><span>Profil</span></a>
   </nav>
+
+  <!-- Script gestion favoris -->
+  <script>
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    document.querySelectorAll(".favorite-btn").forEach(btn => {
+      const schoolId = btn.dataset.school;
+
+      // Si déjà en favoris → cœur rouge
+      if (favorites.includes(schoolId)) {
+        btn.classList.add("active");
+      }
+
+      btn.addEventListener("click", () => {
+        if (favorites.includes(schoolId)) {
+          // Retirer des favoris
+          const index = favorites.indexOf(schoolId);
+          favorites.splice(index, 1);
+          btn.classList.remove("active");
+        } else {
+          // Ajouter aux favoris
+          favorites.push(schoolId);
+          btn.classList.add("active");
+        }
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+      });
+    });
+  </script>
+
+  <style>
+    .favorite-btn.active i {
+      color: red;
+    }
+  </style>
 </body>
 </html>
