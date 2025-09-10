@@ -3,20 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edami - Favoris</title>
+  <title>Mes Favoris</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-  <header class="appbar">
-    <div class="logo">Edami</div>
-    <input type="text" placeholder="Rechercher une école..." class="search-bar">
-  </header>
+  <h1>Mes écoles favorites</h1>
+  <div id="favorites-list"></div>
 
-  <main class="content" id="favorites-list">
-    <h2>Mes écoles favorites</h2>
-    <!-- Les écoles favorites seront ajoutées ici via JS -->
-  </main>
 
   <nav class="bottombar">
     <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
@@ -25,26 +18,21 @@
     <a href="#"><i class="fas fa-user"></i><span>Profil</span></a>
   </nav>
 
-  <script>
-    const schools = {
-      "omar_bongo": {name: "Université Omar Bongo"},
-      "ens": {name: "École Normale Supérieure"},
-      "ist": {name: "Institut Supérieur de Technologie"}
-    };
-
+   <script>
+    // Récupérer les favoris
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    const container = document.getElementById("favorites-list");
 
-    if(favorites.length === 0){
-      container.innerHTML += "<p>Vous n'avez aucune école favorite.</p>";
+    const listContainer = document.getElementById("favorites-list");
+
+    if (favorites.length === 0) {
+      listContainer.innerHTML = "<p>Aucun favori pour le moment.</p>";
     } else {
       favorites.forEach(id => {
-        if(schools[id]){
-          const div = document.createElement("div");
-          div.classList.add("post");
-          div.innerHTML = `<a href="school.html?id=${id}" class="school-link">${schools[id].name}</a>`;
-          container.appendChild(div);
-        }
+        // Ici tu peux personnaliser l’affichage
+        const item = document.createElement("div");
+        item.classList.add("favorite-item");
+        item.textContent = "École " + id; // Remplace par le vrai nom de l’école si tu veux
+        listContainer.appendChild(item);
       });
     }
   </script>
