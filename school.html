@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edami - École</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <!-- AppBar -->
+  <header class="appbar">
+    <div class="logo">Edami</div>
+    <input type="text" placeholder="Rechercher une école..." class="search-bar">
+  </header>
+
+  <!-- Profil école dynamique -->
+  <main class="school-profile">
+    <div class="school-header">
+      <img id="school-logo" src="" alt="Logo école" class="school-logo">
+      <div class="school-info">
+        <h1 id="school-name"></h1>
+        <p id="school-description"></p>
+      </div>
+    </div>
+
+    <!-- Posts -->
+    <section class="school-posts" id="school-posts">
+      <h2>Actualités</h2>
+    </section>
+  </main>
+
+  <!-- Bottom Navbar -->
+  <nav class="bottombar">
+    <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
+    <a href="#"><i class="fas fa-heart"></i><span>Favoris</span></a>
+    <a href="#"><i class="fas fa-star"></i><span>Top Écoles</span></a>
+    <a href="#"><i class="fas fa-user"></i><span>Profil</span></a>
+  </nav>
+
+  <script src="school.js"></script>
+</body>
+</html>
