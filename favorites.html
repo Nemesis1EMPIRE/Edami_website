@@ -5,11 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mes Favoris</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-  <h1>Mes écoles favorites</h1>
-  <div id="favorites-list"></div>
+  <header class="appbar">
+    <div class="logo">Edami</div>
+    <input type="text" placeholder="Rechercher une école..." class="search-bar">
+  </header>
 
+  <main class="content" id="favorites-list">
+    <h2>Mes écoles favorites</h2>
+  </main>
 
   <nav class="bottombar">
     <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
@@ -18,32 +24,34 @@
     <a href="#"><i class="fas fa-user"></i><span>Profil</span></a>
   </nav>
 
-   <script>
-  const schools = {
-    "omar_bongo": { name: "Université Omar Bongo" },
-    "ens": { name: "École Normale Supérieure" },
-    "ist": { name: "Institut Supérieur de Technologie" }
-  };
+  <script>
+    const schools = {
+      "omar_bongo": { name: "Université Omar Bongo", logo: "https://via.placeholder.com/80x80?text=UOB" },
+      "ens": { name: "École Normale Supérieure", logo: "https://via.placeholder.com/80x80?text=ENS" },
+      "ist": { name: "Institut Supérieur de Technologie", logo: "https://via.placeholder.com/80x80?text=IST" }
+    };
 
-  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  const container = document.getElementById("favorites-list");
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const container = document.getElementById("favorites-list");
 
-  if (favorites.length === 0) {
-    container.innerHTML += "<p>Vous n'avez aucune école favorite.</p>";
-  } else {
-    favorites.forEach(id => {
-      if (schools[id]) {
-        const div = document.createElement("div");
-        div.classList.add("post"); // même style que index.html
-        div.innerHTML = `
-          <a href="school.html?id=${id}" class="school-link">
-            <h3>${schools[id].name}</h3>
-          </a>
-        `;
-        container.appendChild(div);
-      }
-    });
-  }
-</script>
+    if (favorites.length === 0) {
+      container.innerHTML += "<p>Vous n'avez aucune école favorite.</p>";
+    } else {
+      favorites.forEach(id => {
+        if (schools[id]) {
+          const div = document.createElement("div");
+          div.classList.add("school-card");
+          div.innerHTML = `
+            <img src="${schools[id].logo}" alt="${schools[id].name}" class="school-logo">
+            <div class="school-info">
+              <h3>${schools[id].name}</h3>
+              <a href="school.html?id=${id}" class="school-link">Voir le profil</a>
+            </div>
+          `;
+          container.appendChild(div);
+        }
+      });
+    }
+  </script>
 </body>
 </html>
