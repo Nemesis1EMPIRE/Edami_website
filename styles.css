@@ -1,0 +1,77 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Body */
+body {
+  background: #f4f6f9;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* AppBar */
+.appbar {
+  background: #006400;
+  color: white;
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.appbar .logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.appbar input {
+  padding: 0.4rem;
+  border: none;
+  border-radius: 5px;
+  width: 60%;
+}
+
+/* Feed */
+.feed {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.post {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post h3 {
+  margin-bottom: 0.5rem;
+  color: #006400;
+}
+
+/* Bottom Navbar */
+.bottom-nav {
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.7rem 0;
+  border-top: 1px solid #ddd;
+}
+
+.bottom-nav a {
+  text-decoration: none;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.bottom-nav a.active {
+  color: #006400;
+  font-weight: bold;
+}
