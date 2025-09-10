@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Top Écoles</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <!-- Font Awesome v6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     .post {
       border: 1px solid #ddd;
@@ -14,8 +15,20 @@
       margin: 15px;
       background: #fff;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
     }
-    .post h3 {
+    .post img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .post-content {
+      flex: 1;
+    }
+    .post-content h3 {
       margin: 0 0 10px;
       font-size: 20px;
       color: #333;
@@ -24,7 +37,7 @@
       display: flex;
       gap: 5px;
       cursor: pointer;
-      font-size: 22px;
+      font-size: 20px;
       color: #ddd;
     }
     .stars .active {
@@ -39,6 +52,32 @@
       text-decoration: none;
       color: inherit;
     }
+    .bottombar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background: #fff;
+      border-top: 1px solid #ddd;
+      padding: 8px 0;
+    }
+    .bottombar a {
+      text-decoration: none;
+      color: #666;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .bottombar a.active {
+      color: #007bff;
+    }
+    .bottombar i {
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
   </style>
 </head>
 <body>
@@ -52,18 +91,16 @@
   </main>
 
   <nav class="bottombar">
-    <a href="index.html" class="active"><i class="fas fa-home"></i><span>Accueil</span></a>
-    <a href="favorites.html"><i class="fas fa-heart"></i><span>Favoris</span></a>
-    <a href="top.html"><i class="fas fa-star"></i><span>Top Écoles</span></a>
-    
+    <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
+    <a href="favorites.html"><i class="fas fa-heart"></i><span>Favoris</span>
+    <a href="top.html" class="active"><i class="fas fa-star"></i><span>Top Écoles</span></a>
   </nav>
-
 
   <script>
     const schools = {
-      "omar_bongo": { name: "Université Omar Bongo" },
-      "ens": { name: "École Normale Supérieure" },
-      "ist": { name: "Institut Supérieur de Technologie" }
+      "omar_bongo": { name: "Université Omar Bongo", img: "https://via.placeholder.com/80?text=UOB" },
+      "ens": { name: "École Normale Supérieure", img: "https://via.placeholder.com/80?text=ENS" },
+      "ist": { name: "Institut Supérieur de Technologie", img: "https://via.placeholder.com/80?text=IST" }
     };
 
     const container = document.getElementById("top-list");
@@ -86,32 +123,31 @@
     function renderSchools() {
       container.innerHTML = "<h2>Top Écoles</h2>";
 
-      // Créer un tableau avec les moyennes
       const sorted = Object.keys(schools).map(id => {
         const data = ratings[id];
         const avg = data.count > 0 ? data.total / data.count : 0;
         return { id, avg, count: data.count };
-      }).sort((a, b) => b.avg - a.avg); // tri décroissant
+      }).sort((a, b) => b.avg - a.avg);
 
-      // Générer les cards
       sorted.forEach(item => {
         const id = item.id;
-        const data = ratings[id];
         const avgRounded = Math.round(item.avg);
 
         const div = document.createElement("div");
         div.classList.add("post");
         div.innerHTML = `
-          <a href="school.html?id=${id}" class="school-link">
-            <h3>${schools[id].name}</h3>
-          </a>
-          <div class="stars">${renderStars(id, avgRounded)}</div>
-          <div class="rating-text">${item.count} votes - Moyenne: ${item.count > 0 ? item.avg.toFixed(1) : "N/A"}</div>
+          <img src="${schools[id].img}" alt="${schools[id].name}">
+          <div class="post-content">
+            <a href="school.html?id=${id}" class="school-link">
+              <h3>${schools[id].name}</h3>
+            </a>
+            <div class="stars">${renderStars(id, avgRounded)}</div>
+            <div class="rating-text">${item.count} votes - Moyenne: ${item.count > 0 ? item.avg.toFixed(1) : "N/A"}</div>
+          </div>
         `;
         container.appendChild(div);
       });
 
-      // Ajouter les listeners après rendu
       document.querySelectorAll(".stars i").forEach(star => {
         star.addEventListener("click", () => {
           const value = parseInt(star.dataset.value);
@@ -121,7 +157,7 @@
           ratings[schoolId].count += 1;
 
           localStorage.setItem("ratings", JSON.stringify(ratings));
-          renderSchools(); // re-render
+          renderSchools();
         });
       });
     }
