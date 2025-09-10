@@ -3,66 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edami - Éducation mon ami</title>
+  <title>Edami - Accueil</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-  <!-- AppBar -->
   <header class="appbar">
     <div class="logo">Edami</div>
     <input type="text" placeholder="Rechercher une école..." class="search-bar">
   </header>
 
-  <!-- Fil d'actualité -->
-  <main class="content">
-    
-    <div class="post">
-      <a href="school.html?id=omar_bongo" class="school-link">Université Omar Bongo</a>
-      <button class="favorite-btn" data-school="omar_bongo"><i class="fas fa-heart"></i></button>
-      <p>Journée portes ouvertes ce samedi !</p>
-   </div>
+  <main class="content" id="school-list">
+    <h2>Actus des écoles</h2>
+  </main>
 
-   <div class="post">
-      <a href="school.html?id=ens" class="school-link">École Normale Supérieure</a>
-      <button class="favorite-btn" data-school="ens"><i class="fas fa-heart"></i></button>
-      <p>Inscription aux clubs universitaires ouverte.</p>
-   </div>
-
-   <div class="post">
-      <a href="school.html?id=ist" class="school-link">Institut Supérieur de Technologie</a>
-      <button class="favorite-btn" data-school="ist"><i class="fas fa-heart"></i></button>
-      <p></p>
-   </div>
-
-  <!-- Bottom Navbar -->
   <nav class="bottombar">
-    <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
+    <a href="index.html" class="active"><i class="fas fa-home"></i><span>Accueil</span></a>
     <a href="favorites.html"><i class="fas fa-heart"></i><span>Favoris</span></a>
-    <a href="test.html"><i class="fas fa-star"></i><span>Top Écoles</span></a>
+    <a href="#"><i class="fas fa-star"></i><span>Top Écoles</span></a>
     <a href="#"><i class="fas fa-user"></i><span>Profil</span></a>
   </nav>
 
-  <!-- Script gestion favoris -->
   <script>
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const schools = {
+      "omar_bongo": { name: "Université Omar Bongo", logo: "https://via.placeholder.com/80x80?text=UOB" },
+      "ens": { name: "École Normale Supérieure", logo: "https://via.placeholder.com/80x80?text=ENS" },
+      "ist": { name: "Institut Supérieur de Technologie", logo: "https://via.placeholder.com/80x80?text=IST" }
+    };
 
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const container = document.getElementById("school-list");
+
+    // Génération des cartes
+    Object.entries(schools).forEach(([id, school]) => {
+      const div = document.createElement("div");
+      div.classList.add("school-card");
+      div.innerHTML = `
+        <img src="${school.logo}" alt="${school.name}" class="school-logo">
+        <div class="school-info">
+          <h3>${school.name}</h3>
+          <a href="school.html?id=${id}" class="school-link">Voir le profil</a>
+        </div>
+        <button class="favorite-btn ${favorites.includes(id) ? "active" : ""}" data-school="${id}">
+          <i class="fas fa-heart"></i>
+        </button>
+      `;
+      container.appendChild(div);
+    });
+
+    // Gestion des favoris
     document.querySelectorAll(".favorite-btn").forEach(btn => {
-      const schoolId = btn.dataset.school;
-
-      // Si déjà en favoris → cœur rouge
-      if (favorites.includes(schoolId)) {
-        btn.classList.add("active");
-      }
-
       btn.addEventListener("click", () => {
+        const schoolId = btn.dataset.school;
         if (favorites.includes(schoolId)) {
-          // Retirer des favoris
-          const index = favorites.indexOf(schoolId);
-          favorites.splice(index, 1);
+          favorites = favorites.filter(id => id !== schoolId);
           btn.classList.remove("active");
         } else {
-          // Ajouter aux favoris
           favorites.push(schoolId);
           btn.classList.add("active");
         }
@@ -70,11 +66,5 @@
       });
     });
   </script>
-
-  <style>
-    .favorite-btn.active i {
-      color: red;
-    }
-  </style>
 </body>
 </html>
