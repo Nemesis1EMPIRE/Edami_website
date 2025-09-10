@@ -170,6 +170,66 @@ body {
 .school-info .school-link:hover {
   text-decoration: underline;
 }
+.school-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.school-card:hover {
+  transform: scale(1.02);
+}
+
+.school-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.school-info {
+  flex: 1;
+}
+
+.school-info h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.school-info .school-link {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.school-info .school-link:hover {
+  text-decoration: underline;
+}
+
+/* Bouton favoris */
+.favorite-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #aaa;
+  transition: color 0.2s;
+}
+
+.favorite-btn.active {
+  color: red;
+}
+
 /* Responsive pour petits écrans */
 @media (max-width: 480px) {
   .appbar .logo {
