@@ -1,42 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edami - Éducation mon ami</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edami - Éducation Mon Ami</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body>
+    <!-- AppBar -->
+    <header class="appbar">
+      <div class="logo">Edami</div>
+      <input type="text" placeholder="Rechercher une école..." class="search-bar">
+    </header>
 
-  <!-- AppBar -->
-  <header class="appbar">
-    <div class="logo">📚 Edami</div>
-    <input type="text" placeholder="Rechercher une école, un étudiant...">
-  </header>
+    <!-- Contenu principal -->
+    <main class="content">
+      <article class="post">
+        <h2>Université Omar Bongo</h2>
+        <p>Nouvelle rentrée académique prévue pour octobre 2025.</p>
+      </article>
+      <article class="post">
+        <h2>École Normale Supérieure</h2>
+        <p>Journée portes ouvertes ce samedi.</p>
+      </article>
+    </main>
 
-  <!-- Body -->
-  <main class="feed">
-    <div class="post">
-      <h3>Université Omar Bongo</h3>
-      <p>🎉 Journée portes ouvertes ce samedi ! Venez découvrir nos programmes.</p>
-    </div>
-    <div class="post">
-      <h3>Institut Supérieur de Technologie</h3>
-      <p>🔬 Nouveau laboratoire de robotique inauguré aujourd’hui.</p>
-    </div>
-    <div class="post">
-      <h3>ENS Libreville</h3>
-      <p>📢 Inscription aux clubs universitaires ouverte jusqu’au 15 septembre.</p>
-    </div>
-  </main>
-
-  <!-- Bottom NavBar -->
-  <nav class="bottom-nav">
-    <a href="#" class="active">🏠 Accueil</a>
-    <a href="#">⭐ Favoris</a>
-    <a href="#">🏫 Top Écoles</a>
-  </nav>
-
-  <script src="script.js"></script>
-</body>
+    <!-- Bottom Navbar -->
+    <nav class="bottombar">
+      <a href="#"><i class="fas fa-home"></i><span>Accueil</span></a>
+      <a href="#"><i class="fas fa-heart"></i><span>Favoris</span></a>
+      <a href="#"><i class="fas fa-star"></i><span>Top Écoles</span></a>
+      <a href="#"><i class="fas fa-user"></i><span>Profil</span></a>
+    </nav>
+  </body>
 </html>
