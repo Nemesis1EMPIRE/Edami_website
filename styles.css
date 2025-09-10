@@ -99,6 +99,19 @@ body {
   color: #1abc9c;
 }
 
+.school-link {
+  color: #006400;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.school-link:hover {
+  text-decoration: underline;
+  color: #1abc9c;
+}
+
 /* Responsive pour petits écrans */
 @media (max-width: 480px) {
   .appbar .logo {
