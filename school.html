@@ -3,41 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edami - École</title>
+  <title>Profil École</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .banner {
+      width: 100%;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+    }
+    .school-profile {
+      padding: 15px;
+    }
+    .school-profile h2 {
+      margin-top: 15px;
+      font-size: 24px;
+    }
+    .school-profile p {
+      margin: 10px 0;
+      color: #555;
+    }
+    .favorite-btn {
+      font-size: 20px;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+    .favorite-btn.active {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-  <!-- AppBar -->
-  <header class="appbar">
-    <div class="logo">Edami</div>
-    <input type="text" placeholder="Rechercher une école..." class="search-bar">
-  </header>
+  <div class="school-profile">
+    <div id="banner" class="banner"></div>
+    <h2 id="school-name"></h2>
+    <p id="school-description"></p>
+    <button id="fav-btn" class="favorite-btn">
+      <i class="fas fa-heart"></i> Ajouter aux favoris
+    </button>
+  </div>
 
-  <!-- Profil école dynamique -->
-  <main class="school-profile">
-    <div class="school-header">
-      <img id="school-logo" src="" alt="Logo école" class="school-logo">
-      <div class="school-info">
-        <h1 id="school-name"></h1>
-        <p id="school-description"></p>
-      </div>
-    </div>
-
-    <!-- Posts -->
-    <section class="school-posts" id="school-posts">
-      <h2>Actualités</h2>
-    </section>
-  </main>
-
-  <!-- Bottom Navbar -->
   <nav class="bottombar">
     <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
-    <a href="#"><i class="fas fa-heart"></i><span>Favoris</span></a>
     <a href="#"><i class="fas fa-star"></i><span>Top Écoles</span></a>
     <a href="#"><i class="fas fa-user"></i><span>Profil</span></a>
   </nav>
 
-  <script src="school.js"></script>
+  <script>
+    const schools = {
+      "omar_bongo": { 
+        name: "Université Omar Bongo", 
+        description: "Grande université au Gabon, spécialisée en sciences humaines et sociales.",
+        banner: "https://picsum.photos/id/1011/800/200" 
+      },
+      "ens": { 
+        name: "École Normale Supérieure", 
+        description: "Formation des enseignants et chercheurs de haut niveau.",
+        banner: "https://picsum.photos/id/1015/800/200" 
+      },
+      "ist": { 
+        name: "Institut Supérieur de Technologie", 
+        description: "Établissement axé sur les sciences appliquées et la technologie.",
+        banner: "https://picsum.photos/id/1016/800/200" 
+      }
+    };
+
+    // Récupérer l'ID dans l'URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    // Charger les infos de l'école
+    const school = schools[id];
+    if (school) {
+      document.getElementById("banner").style.backgroundImage = `url(${school.banner})`;
+      document.getElementById("school-name").textContent = school.name;
+      document.getElementById("school-description").textContent = school.description;
+    } else {
+      document.querySelector(".school-profile").innerHTML = "<p>École non trouvée.</p>";
+    }
+
+    // Gestion des favoris
+    const favBtn = document.getElementById("fav-btn");
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    function updateFavButton() {
+      if (favorites.includes(id)) {
+        favBtn.classList.add("active");
+        favBtn.innerHTML = '<i class="fas fa-heart"></i> Retirer des favoris';
+      } else {
+        favBtn.classList.remove("active");
+        favBtn.innerHTML = '<i class="fas fa-heart"></i> Ajouter aux favoris';
+      }
+    }
+
+    favBtn.addEventListener("click", () => {
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(fav => fav !== id);
+      } else {
+        favorites.push(id);
+      }
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      updateFavButton();
+    });
+
+    updateFavButton();
+  </script>
 </body>
 </html>
