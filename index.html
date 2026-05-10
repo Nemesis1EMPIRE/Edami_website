@@ -3,68 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edami - Accueil</title>
+  <title>Edami — Accueil</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
   <header class="appbar">
-    <div class="logo">Edami</div>
-    <input type="text" placeholder="Rechercher une école..." class="search-bar">
+    <div class="logo">eda<span>mi</span></div>
+    <div class="search-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="search-input" placeholder="Rechercher une école…" class="search-bar">
+    </div>
   </header>
 
-  <main class="content" id="school-list">
-    <h2>Actus des écoles</h2>
+  <main class="content">
+    <div class="section-header">
+      <h2 class="section-title">Actualités des écoles</h2>
+      <span class="section-count" id="school-count"></span>
+    </div>
+    <div id="school-list"></div>
   </main>
 
   <nav class="bottombar">
-    <a href="index.html" class="active"><i class="fas fa-home"></i><span>Accueil</span></a>
-    <a href="favorites.html"><i class="fas fa-heart"></i><span>Favoris</span></a>
-    <a href="top.html"><i class="fas fa-star"></i><span>Top Écoles</span></a>
-    
+    <a href="index.html" class="active">
+      <i class="fas fa-home"></i><span>Accueil</span>
+    </a>
+    <a href="favorites.html">
+      <i class="fas fa-heart"></i><span>Favoris</span>
+    </a>
+    <a href="top.html">
+      <i class="fas fa-star"></i><span>Top Écoles</span>
+    </a>
   </nav>
 
   <script>
     const schools = {
-      "omar_bongo": { name: "Université Omar Bongo", logo: "https://via.placeholder.com/80x80?text=UOB" },
-      "ens": { name: "École Normale Supérieure", logo: "https://via.placeholder.com/80x80?text=ENS" },
-      "ist": { name: "Institut Supérieur de Technologie", logo: "https://via.placeholder.com/80x80?text=IST" }
+      "omar_bongo": {
+        name: "Université Omar Bongo",
+        short: "UOB",
+        color: "#1D9E75",
+        description: "Université publique fondée en 1970 · Libreville",
+        tag: "Université",
+        posts: [
+          { title: "Journée portes ouvertes ce samedi !", time: "Aujourd'hui", type: "event" },
+          { title: "Inscriptions semestre ouvertes jusqu'au 15 sept.", time: "Il y a 2j", type: "actu" }
+        ]
+      },
+      "ens": {
+        name: "École Normale Supérieure",
+        short: "ENS",
+        color: "#378ADD",
+        description: "Formation des enseignants et chercheurs · Libreville",
+        tag: "Grande École",
+        posts: [
+          { title: "Nouveau programme pédagogique pour la rentrée.", time: "Il y a 1j", type: "actu" },
+          { title: "Inscriptions aux clubs universitaires ouvertes.", time: "Il y a 3j", type: "event" }
+        ]
+      },
+      "ist": {
+        name: "Institut Supérieur de Technologie",
+        short: "IST",
+        color: "#D85A30",
+        description: "Sciences appliquées et ingénierie · Libreville",
+        tag: "Institut",
+        posts: [
+          { title: "Nouveau laboratoire de robotique inauguré.", time: "Hier", type: "science" },
+          { title: "Concours interne de programmation la semaine prochaine.", time: "Il y a 2j", type: "event" }
+        ]
+      }
     };
 
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const typeLabels = { event: "Événement", actu: "Actualité", science: "Sciences", sport: "Sport", culture: "Culture" };
+
+    let favorites = JSON.parse(localStorage.getItem("edami_favorites")) || [];
     const container = document.getElementById("school-list");
+    const searchInput = document.getElementById("search-input");
+    const countEl = document.getElementById("school-count");
 
-    // Génération des cartes
-    Object.entries(schools).forEach(([id, school]) => {
-      const div = document.createElement("div");
-      div.classList.add("school-card");
-      div.innerHTML = `
-        <img src="${school.logo}" alt="${school.name}" class="school-logo">
-        <div class="school-info">
-          <h3>${school.name}</h3>
-          <a href="school.html?id=${id}" class="school-link">Voir le profil</a>
-        </div>
-        <button class="favorite-btn ${favorites.includes(id) ? "active" : ""}" data-school="${id}">
-          <i class="fas fa-heart"></i>
-        </button>
-      `;
-      container.appendChild(div);
-    });
+    function renderSchools(filter = "") {
+      container.innerHTML = "";
+      const entries = Object.entries(schools).filter(([, s]) =>
+        s.name.toLowerCase().includes(filter.toLowerCase())
+      );
+      countEl.textContent = `${entries.length} école${entries.length > 1 ? "s" : ""}`;
 
-    // Gestion des favoris
-    document.querySelectorAll(".favorite-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const schoolId = btn.dataset.school;
-        if (favorites.includes(schoolId)) {
-          favorites = favorites.filter(id => id !== schoolId);
-          btn.classList.remove("active");
-        } else {
-          favorites.push(schoolId);
-          btn.classList.add("active");
-        }
-        localStorage.setItem("favorites", JSON.stringify(favorites));
+      if (entries.length === 0) {
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><p>Aucune école trouvée pour "<strong>${filter}</strong>"</p></div>`;
+        return;
+      }
+
+      entries.forEach(([id, school]) => {
+        const isFav = favorites.includes(id);
+        const latestPost = school.posts[0];
+        const div = document.createElement("div");
+        div.className = "school-card";
+        div.innerHTML = `
+          <div class="school-avatar" style="background:${school.color}20; color:${school.color}">
+            ${school.short}
+          </div>
+          <div class="school-info">
+            <div class="school-top-row">
+              <span class="school-tag">${school.tag}</span>
+            </div>
+            <h3>${school.name}</h3>
+            <p class="school-desc">${school.description}</p>
+            ${latestPost ? `
+            <div class="school-preview">
+              <span class="preview-dot type-${latestPost.type}"></span>
+              <span class="preview-text">${latestPost.title}</span>
+              <span class="preview-time">${latestPost.time}</span>
+            </div>` : ""}
+            <a href="school.html?id=${id}" class="school-link">
+              Voir le profil <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+          <button class="favorite-btn ${isFav ? "active" : ""}" data-school="${id}" aria-label="Ajouter aux favoris">
+            <i class="${isFav ? "fas" : "far"} fa-heart"></i>
+          </button>
+        `;
+        container.appendChild(div);
       });
-    });
+
+      document.querySelectorAll(".favorite-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const schoolId = btn.dataset.school;
+          if (favorites.includes(schoolId)) {
+            favorites = favorites.filter(id => id !== schoolId);
+            btn.classList.remove("active");
+            btn.querySelector("i").className = "far fa-heart";
+          } else {
+            favorites.push(schoolId);
+            btn.classList.add("active");
+            btn.querySelector("i").className = "fas fa-heart";
+            btn.classList.add("pop");
+            setTimeout(() => btn.classList.remove("pop"), 300);
+          }
+          localStorage.setItem("edami_favorites", JSON.stringify(favorites));
+        });
+      });
+    }
+
+    searchInput.addEventListener("input", () => renderSchools(searchInput.value));
+    renderSchools();
   </script>
 </body>
 </html>
