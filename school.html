@@ -3,114 +3,165 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil École</title>
+  <title>Profil École — Edami</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <style>
-    .banner {
-      width: 100%;
-      height: 200px;
-      background-size: cover;
-      background-position: center;
-      border-radius: 10px;
-    }
-    .school-profile {
-      padding: 15px;
-    }
-    .school-profile h2 {
-      margin-top: 15px;
-      font-size: 24px;
-    }
-    .school-profile p {
-      margin: 10px 0;
-      color: #555;
-    }
-    .favorite-btn {
-      font-size: 20px;
-      cursor: pointer;
-      border: none;
-      background: none;
-    }
-    .favorite-btn.active {
-      color: red;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div class="school-profile">
-    <div id="banner" class="banner"></div>
-    <h2 id="school-name"></h2>
-    <p id="school-description"></p>
-    <button id="fav-btn" class="favorite-btn">
-      <i class="fas fa-heart"></i> Ajouter aux favoris
-    </button>
-  </div>
+
+  <header class="appbar appbar-back">
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <div class="logo">eda<span>mi</span></div>
+    <div style="width:36px"></div>
+  </header>
+
+  <main class="content" id="profile-content">
+    <div class="profile-skeleton">
+      <div class="skeleton-banner"></div>
+      <div class="skeleton-line wide"></div>
+      <div class="skeleton-line medium"></div>
+    </div>
+  </main>
 
   <nav class="bottombar">
-    <a href="index.html" class="active"><i class="fas fa-home"></i><span>Accueil</span></a>
+    <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
     <a href="favorites.html"><i class="fas fa-heart"></i><span>Favoris</span></a>
     <a href="top.html"><i class="fas fa-star"></i><span>Top Écoles</span></a>
-    
   </nav>
 
   <script>
     const schools = {
-      "omar_bongo": { 
-        name: "Université Omar Bongo", 
-        description: "Grande université au Gabon, spécialisée en sciences humaines et sociales.",
-        banner: "https://picsum.photos/id/1011/800/200" 
+      "omar_bongo": {
+        name: "Université Omar Bongo",
+        short: "UOB",
+        color: "#1D9E75",
+        description: "Grande université publique fondée en 1970, spécialisée en sciences humaines et sociales. Elle forme chaque année des milliers d'étudiants dans les domaines du droit, de l'économie, des lettres et des sciences.",
+        location: "Libreville, Gabon",
+        tag: "Université",
+        founded: "1970",
+        students: "15 000+",
+        banner: "https://picsum.photos/id/1011/800/300",
+        posts: [
+          { title: "Journée portes ouvertes ce samedi !", body: "Venez découvrir les filières et rencontrer les enseignants. Ouvert de 9h à 17h.", time: "Aujourd'hui", type: "event" },
+          { title: "Inscriptions pour le nouveau semestre ouvertes.", body: "Les inscriptions sont ouvertes jusqu'au 15 septembre. Rendez-vous au service de scolarité.", time: "Il y a 2j", type: "actu" },
+          { title: "Résultats de la session de juin publiés.", body: "Consultez vos résultats sur l'espace étudiant en ligne.", time: "Il y a 5j", type: "actu" }
+        ]
       },
-      "ens": { 
-        name: "École Normale Supérieure", 
-        description: "Formation des enseignants et chercheurs de haut niveau.",
-        banner: "https://picsum.photos/id/1015/800/200" 
+      "ens": {
+        name: "École Normale Supérieure",
+        short: "ENS",
+        color: "#378ADD",
+        description: "École prestigieuse dédiée à la formation des enseignants et chercheurs du Gabon. Reconnue pour l'excellence académique et la rigueur scientifique de ses programmes.",
+        location: "Libreville, Gabon",
+        tag: "Grande École",
+        founded: "1983",
+        students: "3 200+",
+        banner: "https://picsum.photos/id/1015/800/300",
+        posts: [
+          { title: "Nouveau programme pédagogique pour la rentrée.", body: "Un parcours renforcé en pédagogie numérique est intégré dès cette année.", time: "Hier", type: "actu" },
+          { title: "Inscriptions aux clubs universitaires ouvertes.", body: "Théâtre, débat, sciences — rejoignez un club et enrichissez votre parcours.", time: "Il y a 3j", type: "event" }
+        ]
       },
-      "ist": { 
-        name: "Institut Supérieur de Technologie", 
-        description: "Établissement axé sur les sciences appliquées et la technologie.",
-        banner: "https://picsum.photos/id/1016/800/200" 
+      "ist": {
+        name: "Institut Supérieur de Technologie",
+        short: "IST",
+        color: "#D85A30",
+        description: "Institut spécialisé dans les technologies et l'ingénierie, formant les techniciens et ingénieurs dont le Gabon a besoin pour son développement industriel et numérique.",
+        location: "Libreville, Gabon",
+        tag: "Institut",
+        founded: "1991",
+        students: "2 800+",
+        banner: "https://picsum.photos/id/1016/800/300",
+        posts: [
+          { title: "Nouveau laboratoire de robotique inauguré.", body: "Un espace de 400m² entièrement équipé pour les projets d'automatisation et de robotique.", time: "Hier", type: "science" },
+          { title: "Concours interne de programmation la semaine prochaine.", body: "Inscrivez-vous avant vendredi. Prix et certifications à la clé.", time: "Il y a 2j", type: "event" },
+          { title: "Partenariat avec une université française signé.", body: "Un accord d'échange d'étudiants avec l'université de Bordeaux a été officialisé.", time: "Il y a 1 sem.", type: "actu" }
+        ]
       }
     };
 
-    // Récupérer l'ID dans l'URL
+    const typeLabels = { event: "Événement", actu: "Actualité", science: "Sciences", sport: "Sport", culture: "Culture" };
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
-
-    // Charger les infos de l'école
     const school = schools[id];
-    if (school) {
-      document.getElementById("banner").style.backgroundImage = `url(${school.banner})`;
-      document.getElementById("school-name").textContent = school.name;
-      document.getElementById("school-description").textContent = school.description;
+    const content = document.getElementById("profile-content");
+
+    let favorites = JSON.parse(localStorage.getItem("edami_favorites")) || [];
+
+    if (!school) {
+      content.innerHTML = `<div class="empty-state"><i class="fas fa-school"></i><p>École introuvable.</p><a href="index.html" class="school-link">← Retour à l'accueil</a></div>`;
     } else {
-      document.querySelector(".school-profile").innerHTML = "<p>École non trouvée.</p>";
+      const isFav = favorites.includes(id);
+      content.innerHTML = `
+        <div class="profile-banner" style="background-image:url(${school.banner})">
+          <div class="profile-banner-overlay">
+            <div class="profile-avatar" style="background:${school.color}; color:#fff">${school.short}</div>
+          </div>
+        </div>
+
+        <div class="profile-body">
+          <div class="profile-header">
+            <div>
+              <span class="school-tag">${school.tag}</span>
+              <h1 class="profile-name">${school.name}</h1>
+              <p class="profile-location"><i class="fas fa-map-marker-alt"></i> ${school.location}</p>
+            </div>
+            <button id="fav-btn" class="fav-large-btn ${isFav ? "active" : ""}" aria-label="Favoris">
+              <i class="${isFav ? "fas" : "far"} fa-heart"></i>
+            </button>
+          </div>
+
+          <p class="profile-description">${school.description}</p>
+
+          <div class="profile-stats">
+            <div class="stat-item">
+              <span class="stat-value">${school.students}</span>
+              <span class="stat-label">Étudiants</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value">${school.founded}</span>
+              <span class="stat-label">Fondée en</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value">${school.posts.length}</span>
+              <span class="stat-label">Actualité${school.posts.length > 1 ? "s" : ""}</span>
+            </div>
+          </div>
+
+          <div class="posts-section">
+            <h2 class="posts-title">Publications</h2>
+            ${school.posts.map(p => `
+              <div class="post-card">
+                <div class="post-meta">
+                  <span class="post-tag type-${p.type}">${typeLabels[p.type] || p.type}</span>
+                  <span class="post-time">${p.time}</span>
+                </div>
+                <h3 class="post-heading">${p.title}</h3>
+                <p class="post-body">${p.body}</p>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+
+      const favBtn = document.getElementById("fav-btn");
+      favBtn.addEventListener("click", () => {
+        if (favorites.includes(id)) {
+          favorites = favorites.filter(f => f !== id);
+          favBtn.classList.remove("active");
+          favBtn.querySelector("i").className = "far fa-heart";
+        } else {
+          favorites.push(id);
+          favBtn.classList.add("active");
+          favBtn.querySelector("i").className = "fas fa-heart";
+          favBtn.classList.add("pop");
+          setTimeout(() => favBtn.classList.remove("pop"), 300);
+        }
+        localStorage.setItem("edami_favorites", JSON.stringify(favorites));
+      });
     }
-
-    // Gestion des favoris
-    const favBtn = document.getElementById("fav-btn");
-    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-    function updateFavButton() {
-      if (favorites.includes(id)) {
-        favBtn.classList.add("active");
-        favBtn.innerHTML = '<i class="fas fa-heart"></i> Retirer des favoris';
-      } else {
-        favBtn.classList.remove("active");
-        favBtn.innerHTML = '<i class="fas fa-heart"></i> Ajouter aux favoris';
-      }
-    }
-
-    favBtn.addEventListener("click", () => {
-      if (favorites.includes(id)) {
-        favorites = favorites.filter(fav => fav !== id);
-      } else {
-        favorites.push(id);
-      }
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-      updateFavButton();
-    });
-
-    updateFavButton();
   </script>
 </body>
 </html>
