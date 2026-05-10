@@ -3,55 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes Favoris</title>
+  <title>Mes Favoris — Edami</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
   <header class="appbar">
-    <div class="logo">Edami</div>
-    <input type="text" placeholder="Rechercher une école..." class="search-bar">
+    <div class="logo">eda<span>mi</span></div>
+    <div class="appbar-title">Mes Favoris</div>
   </header>
 
-  <main class="content" id="favorites-list">
-    <h2>Mes écoles favorites</h2>
+  <main class="content">
+    <div class="section-header">
+      <h2 class="section-title">Écoles suivies</h2>
+      <span class="section-count" id="fav-count"></span>
+    </div>
+    <div id="favorites-container"></div>
   </main>
 
   <nav class="bottombar">
     <a href="index.html"><i class="fas fa-home"></i><span>Accueil</span></a>
     <a href="favorites.html" class="active"><i class="fas fa-heart"></i><span>Favoris</span></a>
     <a href="top.html"><i class="fas fa-star"></i><span>Top Écoles</span></a>
-    
   </nav>
 
   <script>
     const schools = {
-      "omar_bongo": { name: "Université Omar Bongo", logo: "https://via.placeholder.com/80x80?text=UOB" },
-      "ens": { name: "École Normale Supérieure", logo: "https://via.placeholder.com/80x80?text=ENS" },
-      "ist": { name: "Institut Supérieur de Technologie", logo: "https://via.placeholder.com/80x80?text=IST" }
+      "omar_bongo": {
+        name: "Université Omar Bongo",
+        short: "UOB",
+        color: "#1D9E75",
+        description: "Université publique · Libreville",
+        tag: "Université",
+        posts: [
+          { title: "Journée portes ouvertes ce samedi !", time: "Aujourd'hui", type: "event" },
+          { title: "Inscriptions semestre ouvertes jusqu'au 15 sept.", time: "Il y a 2j", type: "actu" }
+        ]
+      },
+      "ens": {
+        name: "École Normale Supérieure",
+        short: "ENS",
+        color: "#378ADD",
+        description: "Formation des enseignants · Libreville",
+        tag: "Grande École",
+        posts: [
+          { title: "Nouveau programme pédagogique pour la rentrée.", time: "Hier", type: "actu" }
+        ]
+      },
+      "ist": {
+        name: "Institut Supérieur de Technologie",
+        short: "IST",
+        color: "#D85A30",
+        description: "Sciences appliquées et ingénierie · Libreville",
+        tag: "Institut",
+        posts: [
+          { title: "Nouveau laboratoire de robotique inauguré.", time: "Hier", type: "science" }
+        ]
+      }
     };
 
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    const container = document.getElementById("favorites-list");
+    let favorites = JSON.parse(localStorage.getItem("edami_favorites")) || [];
+    const container = document.getElementById("favorites-container");
+    const countEl = document.getElementById("fav-count");
 
-    if (favorites.length === 0) {
-      container.innerHTML += "<p>Vous n'avez aucune école favorite.</p>";
-    } else {
-      favorites.forEach(id => {
-        if (schools[id]) {
-          const div = document.createElement("div");
-          div.classList.add("school-card");
-          div.innerHTML = `
-            <img src="${schools[id].logo}" alt="${schools[id].name}" class="school-logo">
-            <div class="school-info">
-              <h3>${schools[id].name}</h3>
-              <a href="school.html?id=${id}" class="school-link">Voir le profil</a>
+    function renderFavorites() {
+      container.innerHTML = "";
+      const favSchools = favorites.filter(id => schools[id]);
+      countEl.textContent = favSchools.length > 0 ? `${favSchools.length} école${favSchools.length > 1 ? "s" : ""}` : "";
+
+      if (favSchools.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="far fa-heart"></i>
+            <p>Aucun favori pour l'instant.</p>
+            <a href="index.html" class="school-link">Découvrir des écoles →</a>
+          </div>`;
+        return;
+      }
+
+      favSchools.forEach(id => {
+        const school = schools[id];
+        const latestPost = school.posts[0];
+        const div = document.createElement("div");
+        div.className = "school-card";
+        div.innerHTML = `
+          <div class="school-avatar" style="background:${school.color}20; color:${school.color}">${school.short}</div>
+          <div class="school-info">
+            <div class="school-top-row">
+              <span class="school-tag">${school.tag}</span>
             </div>
-          `;
-          container.appendChild(div);
-        }
+            <h3>${school.name}</h3>
+            <p class="school-desc">${school.description}</p>
+            ${latestPost ? `
+            <div class="school-preview">
+              <span class="preview-dot type-${latestPost.type}"></span>
+              <span class="preview-text">${latestPost.title}</span>
+              <span class="preview-time">${latestPost.time}</span>
+            </div>` : ""}
+            <a href="school.html?id=${id}" class="school-link">Voir le profil <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <button class="favorite-btn active" data-school="${id}" aria-label="Retirer des favoris">
+            <i class="fas fa-heart"></i>
+          </button>
+        `;
+        container.appendChild(div);
+      });
+
+      document.querySelectorAll(".favorite-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const schoolId = btn.dataset.school;
+          favorites = favorites.filter(id => id !== schoolId);
+          localStorage.setItem("edami_favorites", JSON.stringify(favorites));
+          renderFavorites();
+        });
       });
     }
+
+    renderFavorites();
   </script>
 </body>
 </html>
